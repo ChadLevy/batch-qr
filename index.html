@@ -74,28 +74,7 @@
 
     <script type="text/javascript">
         const size = 100;
-        const qrUrl = `http://chart.googleapis.com/chart?cht=qr&chs=${size}x${size}&chl=`;
-
-        const sampleText = `Grayce Arango  
-Kathlene Hope  
-Kimber Pinegar  
-Tameika Kimbrough  
-Cythia Wampler  
-Darlene Shoener  
-Myrta Principe  
-Tobias Tacy  
-Mack Brim  
-Matthew Olivarria  
-Jennie Lubin  
-Tamie Brazeau  
-Toshia Mallow  
-Delfina Kall  
-Denita Luo  
-Milo Hachey  
-Tuyet Hussein  
-Joetta Percell  
-Shalon Lapine  
-Porfirio Striplin`;
+        const qrUrl = `https://chart.googleapis.com/chart?cht=qr&chs=${size}x${size}&chl=`;
 
         var input = document.getElementById('txtInput');
         var results = document.getElementById('results');
@@ -104,16 +83,13 @@ Porfirio Striplin`;
 
         generateButton.addEventListener("click", generate);
 
-        (function(){
-            input.placeholder = sampleText;
-        })();
-
         function generate() {
 
             reset();
 
             if(input.value === '') {
-                input.value = sampleText;
+                alert('Please enter some values');
+                return;
             }
 
             var inputs = (input.value).split('\n');
@@ -133,8 +109,6 @@ Porfirio Striplin`;
                     results.insertAdjacentHTML('beforeend', template);
                 }
             }
-
-            console.log(printButton);
 
             printButton.disabled = false;
         }
