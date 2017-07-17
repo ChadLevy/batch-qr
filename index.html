@@ -1,0 +1,153 @@
+<html>
+
+<head>
+    <title></title>
+    <style type="text/css">
+        body {
+            font-family: Cambria, Cochin, Georgia, Times, Times New Roman, serif;
+        }
+
+        #title {
+            display: block;
+            width: 100%;
+            height: 100px;
+        }
+
+            #title h1 {
+                padding-top: 30px;
+            }
+
+        .page {
+            display: block;
+            width: 100%;
+        }
+
+        .page img {
+            float: left;
+        }
+
+        .page h1 {
+            float: left;    
+            padding-top: 10px;
+        }
+
+        @media print {
+            .no-print {
+                display: none;
+            }
+
+            #results {
+                float: none;
+            }
+
+            .page {
+                display: block;
+                /* page-break-after: always; */
+                page-break-inside: avoid;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="no-print">
+        <div id="title">
+            <img src="title.png" style="float: left" />
+            <h1>Batch QR code generator</h1>
+        </div>
+
+        <p>Paste list of text you would like generated into QR codes. Separate each value with a new line:</p>
+        
+        <textarea id="txtInput" rows="10" cols="50"></textarea><br />
+
+        <p>
+            <button id="js-generate">Generate</button>
+            <button id="js-print" disabled onclick="window.print()">Print</button>
+        </p>
+
+
+    </div>
+
+    <div id="results"></div>
+
+    <script type="text/javascript">
+        const size = 100;
+        const qrUrl = `http://chart.googleapis.com/chart?cht=qr&chs=${size}x${size}&chl=`;
+
+        const sampleText = `Grayce Arango  
+Kathlene Hope  
+Kimber Pinegar  
+Tameika Kimbrough  
+Cythia Wampler  
+Darlene Shoener  
+Myrta Principe  
+Tobias Tacy  
+Mack Brim  
+Matthew Olivarria  
+Jennie Lubin  
+Tamie Brazeau  
+Toshia Mallow  
+Delfina Kall  
+Denita Luo  
+Milo Hachey  
+Tuyet Hussein  
+Joetta Percell  
+Shalon Lapine  
+Porfirio Striplin`;
+
+        var input = document.getElementById('txtInput');
+        var results = document.getElementById('results');
+        var generateButton = document.getElementById('js-generate');
+        var printButton = document.getElementById('js-print');
+
+        generateButton.addEventListener("click", generate);
+
+        (function(){
+            input.placeholder = sampleText;
+        })();
+
+        function generate() {
+
+            reset();
+
+            if(input.value === '') {
+                input.value = sampleText;
+            }
+
+            var inputs = (input.value).split('\n');
+
+            for (var i = 0; i <= inputs.length - 1; i++) {
+
+                var name = inputs[i].trim();
+
+                if(name.length > 0) {
+                    var template = `
+                        <div class="page" style="height: ${size + 10}px">
+                            <img src="${ qrUrl + name }" />
+                            <h1>${ name }</h1>
+                        </div>
+                    `;
+
+                    results.insertAdjacentHTML('beforeend', template);
+                }
+            }
+
+            console.log(printButton);
+
+            printButton.disabled = false;
+        }
+
+        // removeChild is actually faster than simply setting innerHtml to nothing.
+        // see: https://stackoverflow.com/a/3955238/118697
+        function reset() {
+            while (results.firstChild) {
+                results.removeChild(results.firstChild);
+            }
+        }
+    </script>
+
+</body>
+
+</html>
